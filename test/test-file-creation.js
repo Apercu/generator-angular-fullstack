@@ -34,7 +34,7 @@ describe('angular-fullstack generator', function () {
   }
 
   beforeEach(function (done) {
-    this.timeout(10000);
+    this.timeout(30000);
     var deps = [
       '../../app',
       [
