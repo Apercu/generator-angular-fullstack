@@ -53,7 +53,7 @@ var AngularFullstackGenerator = yeoman.generators.Base.extend({
 		if (this.skipConfig) return;
 		var cb = this.async();
 
-		this.log('# General\n');
+		this.log('# Global\n');
 
 		this.prompt([{
 			type: "list",

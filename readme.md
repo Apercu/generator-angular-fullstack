@@ -33,6 +33,11 @@ Run `grunt` for building, `grunt serve` for preview, and `grunt serve:dist` for 
 
 ## Supported Configurations
 
+
+**Global**
+
+* Task Runner: `Grunt`, `Gulp`
+
 **Client**
 
 * Scripts: `JavaScript`, `CoffeeScript`
