@@ -39,7 +39,7 @@ var AngularFullstackGenerator = yeoman.generators.Base.extend({
         type: "confirm",
         name: "skipConfig",
         message: "Existing .yo-rc configuration found, would you like to use it?",
-        default: true,
+        default: true
       }], function (answers) {
         this.skipConfig = answers.skipConfig;
         cb();
@@ -48,6 +48,24 @@ var AngularFullstackGenerator = yeoman.generators.Base.extend({
       cb();
     }
   },
+
+	generalPrompts: function() {
+		if (this.skipConfig) return;
+		var cb = this.async();
+
+		this.log('# General\n');
+
+		this.prompt([{
+			type: "list",
+			name: "taskrunner",
+			message: "What task runner would you like to use?",
+			choices: [ "Grunt", "Gulp" ],
+			filter: function ( val ) { return val.toLowerCase }
+		}], function (answers) {
+			this.filters[answers.taskrunner] = true;
+			cb();
+		}.bind(this));
+	},
 
   clientPrompts: function() {
     if(this.skipConfig) return;
@@ -106,7 +124,7 @@ var AngularFullstackGenerator = yeoman.generators.Base.extend({
         this.filters[answers.router] = true;
         this.filters['bootstrap'] = answers.bootstrap;
         this.filters['uibootstrap'] =  answers.uibootstrap;
-      cb();
+        cb();
       }.bind(this));
   },
 
