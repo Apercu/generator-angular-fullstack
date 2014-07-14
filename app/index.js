@@ -60,6 +60,7 @@ var AngularFullstackGenerator = yeoman.generators.Base.extend({
 			name: "taskrunner",
 			message: "What task runner would you like to use?",
 			choices: [ "Grunt", "Gulp" ],
+			default: 'grunt',
 			filter: function ( val ) { return val.toLowerCase }
 		}], function (answers) {
 			this.filters[answers.taskrunner] = true;

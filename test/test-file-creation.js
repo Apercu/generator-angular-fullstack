@@ -9,6 +9,7 @@ var exec = require('child_process').exec;
 
 describe('angular-fullstack generator', function () {
   var gen, defaultOptions = {
+	  taskrunner: 'grunt',
     script: 'js',
     markup: 'html',
     stylesheet: 'sass',
@@ -33,7 +34,7 @@ describe('angular-fullstack generator', function () {
   }
 
   beforeEach(function (done) {
-    this.timeout(10000);
+    this.timeout(30000);
     var deps = [
       '../../app',
       [
@@ -160,6 +161,7 @@ describe('angular-fullstack generator', function () {
     describe('with other preprocessors', function() {
       beforeEach(function() {
         helpers.mockPrompt(gen, {
+	        taskrunner: 'grunt',
           script: 'coffee',
           markup: 'jade',
           stylesheet: 'less',
@@ -206,6 +208,7 @@ describe('angular-fullstack generator', function () {
     describe('with other preprocessors and no server options', function() {
       beforeEach(function() {
         helpers.mockPrompt(gen, {
+	        taskrunner: 'grunt',
           script: 'coffee',
           markup: 'jade',
           stylesheet: 'stylus',
@@ -226,7 +229,7 @@ describe('angular-fullstack generator', function () {
           });
         });
       });
-      
+
       it('should pass jshint', function(done) {
         this.timeout(60000);
         gen.run({}, function () {
@@ -252,6 +255,7 @@ describe('angular-fullstack generator', function () {
     describe('with no preprocessors and no server options', function() {
       beforeEach(function() {
         helpers.mockPrompt(gen, {
+	        taskrunner: 'grunt',
           script: 'js',
           markup: 'html',
           stylesheet: 'css',
@@ -295,5 +299,35 @@ describe('angular-fullstack generator', function () {
       });
 
     });
+
+	  describe('using gulp config', function () {
+		  beforeEach(function () {
+			  helpers.mockPrompt(gen, {
+				  taskrunner: 'gulp',
+				  script: 'js',
+				  markup: 'html',
+				  stylesheet: 'css',
+				  router: 'ngroute',
+				  mongoose: false,
+				  auth: false,
+				  oauth: [],
+				  socketio: false
+			  });
+		  });
+
+		  /*
+		  it('should run client tests successfully', function(done) {
+			  this.timeout(60000);
+			  gen.run({}, function () {
+			    exec('gulp test:client', function (error, stdout, stderr) {
+						expect(stdout, 'Client tests failed \n' + stdout ).to.contain('Executed 1 of 1\u001b[32m SUCCESS\u001b');
+			      done();
+			    });
+			  });
+		  });
+		  */
+
+	  });
+
   });
 });
