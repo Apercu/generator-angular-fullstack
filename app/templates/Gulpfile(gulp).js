@@ -3,13 +3,26 @@
 var gulp = require('gulp'),
   _g = require('gulp-load-plugins')();
 
-var rimraf = require('rimraf');
-var es = require('event-stream');
+var rimraf = require('rimraf'),
+  es = require('event-stream'),
+  runSequence = require('run-sequence'),
+  wiredep = require('wiredep');
 
 var yeoman = {
   client: require('./bower.json').appPath || 'client',
   server: 'server',
   dist: 'dist'
+  },
+  paths = {
+    client: {
+      main: yeoman.client + '/index.html',
+      views: yeoman.client + '/{app,components}/**/*.<% if(filters.jade) { %>jade<% } %><% else { %>html<% } %>',
+      scripts: yeoman.client + '/{app,components}/**/*.<% if(filters.coffee) { %>coffee<% } %><% else { %>js<% } %>'
+    },
+    server: {
+      scripts: [yeoman.server + '**/*.js', '!' + yeoman.server + '/**/*.spec.js'],
+      tests: yeoman.server + '/**/*.spec.js'
+    }
   },
   express = {
     options: {
@@ -97,6 +110,25 @@ gulp.task('watch', function () {
   gulp.watch(yeoman.client + '/{app,components}/**/*.spec.{coffee,litcoffee,coffee.md}', ['karma']);
   //<% } %>
 
+});
+
+gulp.task('autoprefixer', function () {
+  return gulp.src('{,*/}*.css')
+    .pipe(prefix('last 1 version'))
+    .pipe(gulp.dest('./.tmp'));
+});
+
+gulp.task('bower', function () {
+  return  gulp.src(paths.client.main)
+    .pipe(wiredep({
+      directory: yeoman.client + '/bower_components',
+      ignorePath: '..'
+    }))
+    .pipe(yeoman.client);
+});
+
+gulp.task('build', function (cb) {
+  runSequence('clean:dist');
 });
 
 gulp.task('default', ['newer:jshint', 'test', 'build']);
