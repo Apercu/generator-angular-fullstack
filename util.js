@@ -75,7 +75,7 @@ function appName (self) {
 }
 
 function filterFile (template) {
-  // Find matches for parans
+  // Find matches for params
   var filterMatches = template.match(/\(([^)]+)\)/g);
   var filters = [];
   if(filterMatches) {
