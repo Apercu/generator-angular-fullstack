@@ -71,6 +71,9 @@ gulp.task('watch', function () {
 
   _g.livereload.listen();
 
+  gulp.watch(yeoman.client + '/{app,components}/**/*.html').on('change', _g.livereload.changed);
+  gulp.watch(yeoman.client + '/assets/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}').on('change', _g.livereload.changed);
+
   gulp.watch([
     yeoman.client + '/{app,components}/**/*.js',
     '!' + yeoman.client + '/{app,components}/**/*.spec.js',
@@ -81,37 +84,37 @@ gulp.task('watch', function () {
   gulp.watch([
     yeoman.client + '/{app,components}/**/*.spec.js',
     yeoman.client + '/{app,components}/**/*.mock.js'
-  ], ['newer:jshint:all', 'karma']).on('change', _g.livereload.changed);
+  ], ['newer:jshint:all', 'karma']);
 
-  gulp.watch(yeoman.server + '/**/*.spec.js', ['env:test', 'mochaTest']).on('change', _g.livereload.changed);
+  gulp.watch(yeoman.server + '/**/*.spec.js', ['env:test', 'mochaTest']);
   gulp.watch(yeoman.client + '/{app,components}/**/*.css', ['injector:css']).on('change', _g.livereload.changed);
   //<% if(filters.stylus) { %>
 
-  gulp.watch(yeoman.client + '/{app,components}/**/*.styl', ['injector:stylus', 'stylus', 'autoprefixer']).on('change', _g.livereload.changed);
+  gulp.watch(yeoman.client + '/{app,components}/**/*.styl', ['injector:stylus', 'stylus', 'autoprefixer']);
   //<% } %>
   //<% if(filters.sass) { %>
 
-  gulp.watch(yeoman.client + '/{app,components}/**/*.{scss,sass}', ['injector:sass', 'sass', 'autoprefixer']).on('change', _g.livereload.changed);
+  gulp.watch(yeoman.client + '/{app,components}/**/*.{scss,sass}', ['injector:sass', 'sass', 'autoprefixer']);
   //<% } %>
   //<% if(filters.less) { %>
 
-  gulp.watch(yeoman.client + '/{app,components}/**/*.less', ['injector:less', 'less', 'autoprefixer']).on('change', _g.livereload.changed);
+  gulp.watch(yeoman.client + '/{app,components}/**/*.less', ['injector:less', 'less', 'autoprefixer']);
   //<% } %>
   //<% if(filters.jade) { %>
 
   gulp.watch([
     yeoman.client + '/{app,components}/*',
     yeoman.client + '/{app,components}/**/*.jade'
-  ], ['jade']).on('change', _g.livereload.changed);
+  ], ['jade']);
   //<% } %>
   //<% if(filters.coffee) { %>
 
   gulp.watch([
       yeoman.client + '/{app,components}/**/*.{coffee,litcoffee,coffee.md}',
       '!' + yeoman.client + '/{app,components}/**/*.spec.{coffee,litcoffee,coffee.md}'
-  ], ['newer:coffee', 'injector:scripts']).on('change', _g.livereload.changed);
+  ], ['newer:coffee', 'injector:scripts']);
 
-  gulp.watch(yeoman.client + '/{app,components}/**/*.spec.{coffee,litcoffee,coffee.md}', ['karma']).on('change', _g.livereload.changed);
+  gulp.watch(yeoman.client + '/{app,components}/**/*.spec.{coffee,litcoffee,coffee.md}', ['karma']);
   //<% } %>
 
 });
