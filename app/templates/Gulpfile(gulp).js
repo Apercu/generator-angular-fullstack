@@ -9,9 +9,9 @@ var rimraf = require('rimraf'),
   wiredep = require('wiredep');
 
 var yeoman = {
-  client: require('./bower.json').appPath || 'client',
-  server: 'server',
-  dist: 'dist'
+  client: require('./bower.json').appPath || './client',
+  server: './server',
+  dist: './dist'
   },
   paths = {
     client: {
@@ -33,7 +33,7 @@ var yeoman = {
 // Clean tasks
 // Maybe we just want to clean content and not delete, will try
 gulp.task('clean:dist', function (cb) {
-  rimraf('./dist', cb);
+  rimraf(yeoman.dist, cb);
 });
 
 gulp.task('clean:tmp', function (cb) {
@@ -43,19 +43,19 @@ gulp.task('clean:tmp', function (cb) {
 //Copy tasks
 gulp.task('copy:dist', function () {
   var main = gulp.src([
-    '*.{ico,png,txt}',
-    'bower_components/**/*',
-    'assets/images/{,*/}*.{webp}',
-    'assets/fonts/**/*',
-    '.htaccess',
-    'index.html'
+    yeoman.client + '*.{ico,png,txt}',
+    yeoman.client + 'bower_components/**/*',
+    yeoman.client + 'assets/images/{,*/}*.{webp}',
+    yeoman.client + 'assets/fonts/**/*',
+    yeoman.client + '.htaccess',
+    yeoman.client + 'index.html'
   ])
     .pipe(gulp.dest(yeoman.dist + '/public'));
 
   var extra = gulp.src(['package.json', 'server/**/*'])
     .pipe(gulp.dest(yeoman.dist));
 
-  var images = gulp.src('generated/*')
+  var images = gulp.src('.tmp/images/generated/*')
     .pipe(gulp.dest(yeoman.dist + '/public/assets/images'));
 
   return es.merge(main, extra, images);
@@ -66,6 +66,7 @@ gulp.task('copy:styles', function () {
     .pipe(gulp.dest(yeoman.client));
 });
 
+//Watches
 gulp.task('watch', function () {
   gulp.watch([
     yeoman.client + '/{app,components}/**/*.js',
@@ -110,6 +111,14 @@ gulp.task('watch', function () {
   gulp.watch(yeoman.client + '/{app,components}/**/*.spec.{coffee,litcoffee,coffee.md}', ['karma']);
   //<% } %>
 
+});
+
+gulp.task('imagemin', function () {
+  return gulp.src(yeoman.client + '/assets/images/{,*/}*.{png,jpg,jpeg,gif}')
+    .pipe(imagemin({
+      progressive: true
+    }))
+    .pipe(gulp.dest(yeoman.dist + '/public/assets/images'));
 });
 
 gulp.task('autoprefixer', function () {
