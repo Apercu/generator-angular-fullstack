@@ -16,8 +16,8 @@ var yeoman = {
   paths = {
     client: {
       main: yeoman.client + '/index.html',
-      views: yeoman.client + '/{app,components}/**/*.<% if(filters.jade) { %>jade<% } %><% else { %>html<% } %>',
-      scripts: yeoman.client + '/{app,components}/**/*.<% if(filters.coffee) { %>coffee<% } %><% else { %>js<% } %>'
+      views: yeoman.client + '/{app,components}/**/*.<% if(filters.jade) { %>jade<% } else { %>html<% } %>',
+      scripts: yeoman.client + '/{app,components}/**/*.<% if(filters.coffee) { %>coffee<% } else { %>js<% } %>'
     },
     server: {
       scripts: [yeoman.server + '**/*.js', '!' + yeoman.server + '/**/*.spec.js'],

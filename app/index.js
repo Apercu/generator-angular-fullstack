@@ -51,21 +51,21 @@ var AngularFullstackGenerator = yeoman.generators.Base.extend({
 
   globalPrompts: function() {
     if (this.skipConfig) return;
-      var cb = this.async();
+    var cb = this.async();
 
-      this.log('# Global\n');
+    this.log('# Global\n');
 
-      this.prompt([{
-          type: "list",
-          name: "taskrunner",
-          default: 0,
-          message: "What task runner would you like to use?",
-          choices: [ "Grunt", "Gulp" ],
-          filter: function ( val ) { return val.toLowerCase(); }
-       }], function (answers) {
-         this.filters[answers.taskrunner] = true;
-         cb();
-       }.bind(this));
+    this.prompt([{
+        type: "list",
+        name: "taskrunner",
+        default: 0,
+        message: "What task runner would you like to use?",
+        choices: [ "Grunt", "Gulp" ],
+        filter: function ( val ) { return val.toLowerCase(); }
+     }], function (answers) {
+       this.filters[answers.taskrunner] = true;
+       cb();
+     }.bind(this));
   },
 
   clientPrompts: function() {
