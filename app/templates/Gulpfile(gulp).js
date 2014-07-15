@@ -8,6 +8,7 @@ var es = require('event-stream');
 
 var yeoman = {
   client: require('./bower.json').appPath || 'client',
+  server: 'server',
   dist: 'dist'
   },
   express = {
@@ -51,3 +52,51 @@ gulp.task('copy:styles', function () {
   return gulp.src('{app,components}/**/*.css')
     .pipe(gulp.dest(yeoman.client));
 });
+
+gulp.task('watch', function () {
+  gulp.watch([
+    yeoman.client + '/{app,components}/**/*.js',
+    '!' + yeoman.client + '/{app,components}/**/*.spec.js',
+    '!' + yeoman.client + '/{app,components}/**/*.mock.js',
+    '!' + yeoman.client + '/app/app.js'
+  ], ['injector:scripts']);
+
+  gulp.watch([
+    yeoman.client + '/{app,components}/**/*.spec.js',
+    yeoman.client + '/{app,components}/**/*.mock.js'
+  ], ['newer:jshint:all', 'karma']);
+
+  gulp.watch(yeoman.server + '/**/*.spec.js', ['env:test', 'mochaTest']);
+  gulp.watch(yeoman.client + '/{app,components}/**/*.css', ['injector:css'])
+  //<% if(filters.stylus) { %>
+
+  gulp.watch(yeoman.client + '/{app,components}/**/*.styl', ['injector:stylus', 'stylus', 'autoprefixer']);
+  //<% } %>
+  //<% if(filters.sass) { %>
+
+  gulp.watch(yeoman.client + '/{app,components}/**/*.{scss,sass}', ['injector:sass', 'sass', 'autoprefixer']);
+  //<% } %>
+  //<% if(filters.less) { %>
+
+  gulp.watch(yeoman.client + '/{app,components}/**/*.less', ['injector:less', 'less', 'autoprefixer']);
+  //<% } %>
+  //<% if(filters.jade) { %>
+
+  gulp.watch([
+    yeoman.client + '/{app,components}/*',
+    yeoman.client + '/{app,components}/**/*.jade'
+  ], ['jade']);
+  //<% } %>
+  //<% if(filters.coffee) { %>
+
+  gulp.watch([
+      yeoman.client + '/{app,components}/**/*.{coffee,litcoffee,coffee.md}',
+      '!' + yeoman.client + '/{app,components}/**/*.spec.{coffee,litcoffee,coffee.md}'
+  ], ['newer:coffee', 'injector:scripts']);
+
+  gulp.watch(yeoman.client + '/{app,components}/**/*.spec.{coffee,litcoffee,coffee.md}', ['karma']);
+  //<% } %>
+
+});
+
+gulp.task('default', ['newer:jshint', 'test', 'build']);
