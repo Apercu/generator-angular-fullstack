@@ -28,7 +28,9 @@
     "socket.io": "~1.0.6",
     "socketio-jwt": "^2.0.2"<% } %>
   },
-  "devDependencies": {
+  "devDependencies": {<% if(filters.gulp) { %>
+    "gulp": "",
+    "gulp-load-plugins": "", <% } else { %>
     "grunt": "~0.4.4",
     "grunt-autoprefixer": "~0.7.2",
     "grunt-bower-install": "~1.4.0",
@@ -65,7 +67,7 @@
     "jit-grunt": "^0.5.0",
     "time-grunt": "~0.3.1",
     "grunt-express-server": "~0.4.17",
-    "grunt-open": "~0.2.3",
+    "grunt-open": "~0.2.3",<% } %>
     "open": "~0.0.4",
     "jshint-stylish": "~0.1.5",
     "connect-livereload": "~0.4.0",

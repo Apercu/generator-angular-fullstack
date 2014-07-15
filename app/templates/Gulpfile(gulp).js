@@ -68,6 +68,9 @@ gulp.task('copy:styles', function () {
 
 //Watches
 gulp.task('watch', function () {
+
+  _g.livereload.listen();
+
   gulp.watch([
     yeoman.client + '/{app,components}/**/*.js',
     '!' + yeoman.client + '/{app,components}/**/*.spec.js',
@@ -115,7 +118,7 @@ gulp.task('watch', function () {
 
 gulp.task('imagemin', function () {
   return gulp.src(yeoman.client + '/assets/images/{,*/}*.{png,jpg,jpeg,gif}')
-    .pipe(imagemin({
+    .pipe(_g.imagemin({
       progressive: true
     }))
     .pipe(gulp.dest(yeoman.dist + '/public/assets/images'));
@@ -123,7 +126,7 @@ gulp.task('imagemin', function () {
 
 gulp.task('autoprefixer', function () {
   return gulp.src('{,*/}*.css')
-    .pipe(prefix('last 1 version'))
+    .pipe(_g.prefix('last 1 version'))
     .pipe(gulp.dest('./.tmp'));
 });
 
@@ -134,6 +137,29 @@ gulp.task('bower', function () {
       ignorePath: '..'
     }))
     .pipe(yeoman.client);
+});
+
+gulp.task('jshint', function () {
+  return gulp.src('')
+    .pipe(_g.jshint())
+    .pipe(_g.jshint.reporter('jshint-stylish'));
+});
+
+gulp.task('start:server', function () {
+  nodemon({
+    script: 'server/app.js',
+    nodeArgs: ['--debug-brk']
+  })
+    .on('log', function (e) {
+      console.log(e.colour);
+    })
+    .on('config:update', function () {
+      //open browser
+    });
+});
+
+gulp.task('serve', function (cb) {
+  runSequence('clean:tmp', 'start:server', 'start:client', 'watch', cb);
 });
 
 gulp.task('build', function (cb) {
